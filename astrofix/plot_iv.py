@@ -14,9 +14,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 from astrofix import ASTROFIX_DATA
+from astrofix.plt_ import plt, setup_gca
 
 FILE_PATH = ASTROFIX_DATA / '20241213_iv_scan.txt'
 SIGMA_V = 1.
@@ -24,8 +24,5 @@ SIGMA_V = 1.
 
 V, I = np.loadtxt(FILE_PATH, unpack=True)
 plt.errorbar(V, I, SIGMA_V, fmt='o')
-plt.xlabel('$V_{bias}$ [V]')
-plt.ylabel('I [nA]')
-plt.grid(which='both', color='lightgray', ls='dashed')
-
+setup_gca(xlabel='$V_{bias}$ [V]', ylabel='I [nA]', grids=True, xmin=70, xmax=210)
 plt.show()

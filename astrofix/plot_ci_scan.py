@@ -32,5 +32,6 @@ for file_path in glob.glob(f'{FOLDER_PATH}/*.csv'):
     tot.append(np.mean(run.tot))
 
 plt.plot(vinj, tot, 'o')
-setup_gca(xlabel='Injection voltage [mV]', ylabel='TOT [$\mu$s]', grids=True)
+setup_gca(xlabel='Injection voltage [mV]', ylabel='Average TOT [$\mu$s]', grids=True,
+    xmin=min(vinj) - 10, xmax=max(vinj) + 10)
 plt.show()
