@@ -13,12 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
+
 import numpy as np
 
 from astrofix import ASTROFIX_DATA
 from astrofix.plt_ import plt, setup_gca
 
-FILE_PATH = ASTROFIX_DATA / '20241213_iv_scan.txt'
+FILE_PATH = os.path.join(ASTROFIX_DATA, '20241213_iv_scan.txt')
 SIGMA_V = 1.
 
 

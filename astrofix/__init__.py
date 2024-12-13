@@ -26,4 +26,7 @@ from loguru import logger
 # Basic package structure.
 ASTROFIX_ROOT = Path(__file__).parent
 ASTROFIX_BASE = ASTROFIX_ROOT.parent
-ASTROFIX_DATA = ASTROFIX_BASE / 'data'
+try:
+    ASTROFIX_DATA = os.environ["ASTROFIX_DATA"]
+except:
+    ASTROFIX_DATA = ASTROFIX_BASE / 'data'

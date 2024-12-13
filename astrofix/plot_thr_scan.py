@@ -13,14 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import glob
+import glob, os
 
 from astrofix import ASTROFIX_DATA
 from astrofix.analysis import Run
 from astrofix.plt_ import plt, setup_gca
 
 
-FOLDER_PATH = ASTROFIX_DATA / 'noiseocc_thrscan'
+FOLDER_PATH = os.path.join(ASTROFIX_DATA, 'noiseocc_thrscan')
 
 threshold = []
 rate = []

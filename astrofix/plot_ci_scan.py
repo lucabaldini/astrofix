@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import glob
+import glob, os
 
 import numpy as np
 
@@ -22,7 +22,7 @@ from astrofix.analysis import Run
 from astrofix.plt_ import plt, setup_gca
 
 
-FOLDER_PATH = ASTROFIX_DATA / 'ciscan'
+FOLDER_PATH = os.path.join(ASTROFIX_DATA, 'ciscan')
 
 vinj = []
 tot = []
@@ -32,7 +32,7 @@ for file_path in glob.glob(f'{FOLDER_PATH}/*.csv'):
     tot.append(np.mean(run.tot))
 
 plt.plot(vinj, tot, 'o')
-setup_gca(xlabel='Injection voltage [mV]', ylabel='Average TOT [$\mu$s]', grids=True,
+setup_gca(xlabel='Injection voltage [mV]', ylabel='Average TOT [$\mu$s]', grids=True, 
     xmin=min(vinj) - 10, xmax=max(vinj) + 10)
 
 plt.show()
