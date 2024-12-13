@@ -26,6 +26,6 @@ V, I = np.loadtxt(FILE_PATH, unpack=True)
 plt.errorbar(V, I, SIGMA_V, fmt='o')
 plt.xlabel('$V_{bias}$ [V]')
 plt.ylabel('I [nA]')
-plt.grid(which='both', color='lightgray')
+plt.grid(which='both', color='lightgray', ls='dashed')
 
 plt.show()
