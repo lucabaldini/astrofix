@@ -1,0 +1,18 @@
+# Data taken by hand on December 13, 2024.
+# V_bias [V]  I [nA]
+# Typical fluctuation of the order of ~1 nA
+80  20
+90  26
+100 30
+110 34
+120 38
+130 43
+140 48
+150 55
+160 63
+170 74
+180 88
+185 96
+190 106
+195 119
+200 135
