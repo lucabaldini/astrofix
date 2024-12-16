@@ -91,9 +91,9 @@ class Run:
         return self.options.threshold
 
     def running_time(self) -> float:
+        """ Running time in seconds
         """
-        """
-        return self.options.maxtime
+        return self.options.maxtime*60
 
     def injection_voltage(self) -> float:
         """
@@ -105,7 +105,7 @@ class Run:
         """
         plt.figure('TOT distribution')
         plt.hist(self.tot, bins=binning)
-        plt.xlabel('TOT [$\mu$s]')
+        plt.xlabel(r'TOT [$\mu$s]')
 
     def hit_map(self):
         """Make a hit map.
