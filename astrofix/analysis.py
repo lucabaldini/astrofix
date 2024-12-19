@@ -51,8 +51,15 @@ class Run:
         """Constructor.
         """
         logger.info(f'Opening input file {file_path}...')
-        _, _, _, self.row, self.col, _, _, _, _, _, _, _, _, self.rise_time,\
-            self.fall_time, self.tot = np.loadtxt(file_path, skiprows=1, delimiter=',', unpack=True)
+        try:
+            self.dec_ord, _, _, self.row, self.col, _, _, _, _, _, _, _, _, self.rise_time,\
+                self.fall_time, self.tot = np.loadtxt(file_path, skiprows=1, delimiter=',', unpack=True)
+        except ValueError:
+            logger.warning("ValueError found - file is probably empty")
+            self.dec_ord = [] 
+            self.tot = []
+            self.row = []
+            self.col = []
         logger.info(f'Done, {len(self)} event(s) read.')
         log_file_path = str(file_path).replace('.csv', '.log')
         logger.info(f'Reading associated log file {log_file_path}...')
@@ -75,9 +82,25 @@ class Run:
         else:
             data = log_file.readline()
         data = eval(data)
-        #logger.debug(data)
+        logger.debug(data)
         return data
 
+    def filter_last_tot(self, maxtot=10000):
+        """ Check for multiple trigger of the same pixel in the same buffer and return last ToT 
+            Assuming events are ordered and check that dec_ord of the following line is 0
+            Adding a flag to remove too-large TOT: probably a deconding issue
+        """
+        filtered_tot = []
+        if len(self) == 0:
+            return filtered_tot
+        for i in range(len(self)-1):
+            if self.dec_ord[i+1]==0:
+                if self.tot[i]<=maxtot:
+                    filtered_tot.append(self.tot[i])
+        if self.tot[i]<=maxtot:
+            filtered_tot.append(self.tot[-1]) # always adding last line
+        return np.array(filtered_tot)
+        
     def __len__(self) -> int:
         """Return the number of events in the data file.
         """
@@ -85,6 +108,11 @@ class Run:
             return 1
         return len(self.tot)
 
+    def inject_pixels(self):
+        """
+        """
+        return self.options.inject
+        
     def trigger_threshold(self) -> float:
         """
         """
@@ -126,8 +154,17 @@ class Run:
 
 if __name__ == '__main__':
     from astrofix import ASTROFIX_DATA
-    file_path = ASTROFIX_DATA / '20241213-093443.csv'
+    #file_path = ASTROFIX_DATA / '20241213-093443.csv'
+    import os
+    #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-114807\\20241219-115526.csv') # a file with multiple redout
+    #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-114807\\20241219-114912.csv') # a good file
+    #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-124116\\20241219-134644.csv')  # empty one
+    file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-124116\\20241219-125141.csv') # some too-high values
     run = Run(file_path)
     run.hit_map()
-    run.tot_hist(np.linspace(0, 100, 100))
+    run.tot_hist(np.linspace(0, 500, 501))
+    filtered_tot = run.filter_last_tot(1000) 
+    print(filtered_tot, np.mean(filtered_tot), np.std(filtered_tot, ddof=1))
+    plt.figure()
+    plt.hist(filtered_tot, bins=np.linspace(0, 500, 501), alpha=0.5)
     plt.show()
