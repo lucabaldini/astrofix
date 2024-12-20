@@ -156,15 +156,19 @@ if __name__ == '__main__':
     from astrofix import ASTROFIX_DATA
     #file_path = ASTROFIX_DATA / '20241213-093443.csv'
     import os
-    #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-114807\\20241219-115526.csv') # a file with multiple redout
+    file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-114807\\20241219-115526.csv') # a file with multiple redout
     #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-114807\\20241219-114912.csv') # a good file
     #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-124116\\20241219-134644.csv')  # empty one
-    file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-124116\\20241219-125141.csv') # some too-high values
+    #file_path = os.path.join(ASTROFIX_DATA,  'runsuite_vscan_20241219-124116\\20241219-125141.csv') # some too-high values
     run = Run(file_path)
     run.hit_map()
-    run.tot_hist(np.linspace(0, 500, 501))
+    #run.tot_hist(np.linspace(0, 500, 501))
+    plt.figure('TOT distribution')
+    plt.hist(run.tot, bins=np.linspace(0, 500, 201), label='all entries')
+    plt.xlabel(r'TOT [$\mu$s]')
     filtered_tot = run.filter_last_tot(1000) 
     print(filtered_tot, np.mean(filtered_tot), np.std(filtered_tot, ddof=1))
-    plt.figure()
-    plt.hist(filtered_tot, bins=np.linspace(0, 500, 501), alpha=0.5)
+    #plt.figure()
+    plt.hist(filtered_tot, bins=np.linspace(0, 500, 201), alpha=0.5, label='highest entry only')
+    plt.legend()
     plt.show()
